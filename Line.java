@@ -9,7 +9,9 @@ public class Line extends Shape{
     }
 
     public void draw(Graphics2D g){
-        System.out.println("not yet");
-
+        System.out.println("Line");
+        g.setBackground(color);
+        g.setStroke(stroke);
+        g.drawLine(getX1(), getY1(), getX2(), getY2());
     }
 }
