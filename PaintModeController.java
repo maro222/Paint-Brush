@@ -1,20 +1,11 @@
 
-import java.awt.BasicStroke;
+// import java.awt.BasicStroke;
 import java.awt.Button;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+// import java.awt.Color;
+// import java.awt.event.ActionEvent;
+// import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author abdallah
- */
 public class PaintModeController extends JPanel{
     
     
@@ -24,59 +15,37 @@ public class PaintModeController extends JPanel{
     private Button pencilButton;
     private Button eraserButton;
     
-    private PaintBrushPanel paintBrushPanel;
+    //private PaintBrushPanel paintBrushPanel;
 
-    public PaintModeController(PaintBrushPanel paintBrushPanel ) {
-       lineButton=new Button("line");
+    public PaintModeController(PaintBrushPanel paintBrushPanel) {
+       lineButton=new Button("Line");
        rectangleButton=new Button("Rectangle");
        ovalButton=new Button("Oval");
        pencilButton=new Button("Pencil");
        eraserButton=new Button("Eraser");
        
-         
-        this.paintBrushPanel=paintBrushPanel;
+       //this.paintBrushPanel=paintBrushPanel;
  
+       lineButton.addActionListener(e -> paintBrushPanel.currentShape = new Line());
+       rectangleButton.addActionListener(e -> paintBrushPanel.currentShape = new Rectangle());
+       ovalButton.addActionListener(e -> paintBrushPanel.currentShape = new Oval());
+       pencilButton.addActionListener(e -> paintBrushPanel.currentShape = new Pencil());
+       eraserButton.addActionListener(e -> paintBrushPanel.currentShape = new Eraser());
         
-        lineButton.addActionListener(new PaintModeListener( "Line"));
-        rectangleButton.addActionListener(new PaintModeListener( "Rectangle" ));
-        ovalButton.addActionListener(new PaintModeListener( "Oval"));
-        pencilButton.addActionListener(new PaintModeListener( "Pencil" ));
-        eraserButton.addActionListener(new PaintModeListener( "Eraser"));
-        
-        add(lineButton); 
-        add(rectangleButton); 
-        add(ovalButton); 
-        add(pencilButton); 
-        add(eraserButton); 
-        
+       add(lineButton); 
+       add(rectangleButton); 
+       add(ovalButton); 
+       add(pencilButton); 
+       add(eraserButton);  
     }
     
-    
-    
-    
-    public class PaintModeListener implements ActionListener {
+    // public class PaintModeListener implements ActionListener {
+    //     public PaintModeListener(Shape shape) {
+    //     }
 
-        private String Shape;
-
-        public PaintModeListener(String Shape ) {
-            this.Shape = Shape;
-         }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            paintBrushPanel.currentShape = Shape;
-            paintBrushPanel.repaint();
-        }
-
-    }
-    
-    
-    
-
-    
-    
-    
-    
-    
+    //     @Override
+    //     public void actionPerformed(ActionEvent e) {
+    //         paintBrushPanel.repaint();
+    //     }
+    // }
 }

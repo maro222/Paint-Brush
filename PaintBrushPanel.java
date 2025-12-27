@@ -3,20 +3,27 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.awt.BasicStroke;
-
-import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 public class PaintBrushPanel extends JPanel{
 
-    ArrayList<Shape> list;
-    Tool currenttool;
+     ArrayList<Shape> list;
+    Shape currentShape;
     Color currentcolor;
     BasicStroke currentstroke;
-    float[] dash = { 5.0f };
+    float[] dashPattern = {10f, 5f};
     boolean currentfillflag;
-    JButton rectanglebutton, linebutton, ovalbutton, pencilbutton, eraserbutton;
-    JButton red, black, blue, green;
+
+    FunctionController myFunctionController;
+    PaintColorController myPaintColorController;
+    PaintModeController myPaintModeController;
+    PaintStyleController myPaintStyleController;
+
+
 
 
     PaintBrushPanel(){
@@ -24,24 +31,78 @@ public class PaintBrushPanel extends JPanel{
         currentcolor = Color.BLACK;
         currentfillflag = true;
         currentstroke = new BasicStroke(2);
-
-        rectanglebutton = new JButton("Rectangle");
-        linebutton = new JButton("Line");
-        ovalbutton = new JButton("Oval");
-        pencilbutton = new JButton("Pencil");
-        eraserbutton = new JButton("Erase");
-
-        red = new JButton("Red");
-        red.setBackground(Color.RED);
-        black = new JButton("Black");
-        black.setBackground(Color.BLACK);
-        blue = new JButton("Blue");
-        blue.setBackground(Color.BLUE);
-        green = new JButton("Green");
-        green.setBackground(Color.GREEN);
+        currentShape = new Line();
 
 
-        // rectanglebutton.addActionListener(null);
+        myFunctionController = new FunctionController(this);
+        myPaintColorController = new PaintColorController(this);
+        myPaintModeController = new PaintModeController(this);
+        myPaintStyleController = new PaintStyleController(this);
+        
+        add(myPaintColorController, BorderLayout.WEST);
+        add(myPaintModeController, BorderLayout.SOUTH);
+        add(myFunctionController, BorderLayout.SOUTH);
+        add(myPaintStyleController, BorderLayout.EAST);
+
+        addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                currentShape.onPress(e);
+                currentShape.setColor(currentcolor);
+                currentShape.setFillflag(currentfillflag);
+                if (currentfillflag)
+                    currentShape.setStroke(currentstroke);
+                else
+                {
+                    currentShape.setStroke(new BasicStroke(
+                            3f,                   // line thickness
+                            BasicStroke.CAP_BUTT,       // line cap
+                            BasicStroke.JOIN_MITER,     // line join
+                            10f,            // miter limit
+                            dashPattern,                // dash array
+                            0f              // dash phase (start offset)
+                    ));
+                }
+                repaint();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                currentShape.onRelease(e);
+                PaintBrushPanel.this.list.add(currentShape);
+                repaint();
+                createNewShape();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            
+        });
+
+        addMouseMotionListener(new MouseMotionListener() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                currentShape.onDrag(e);
+                repaint();
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                
+            }
+            
+        });
+
+        
+
     }
 
     public void paint(Graphics g){
@@ -50,6 +111,23 @@ public class PaintBrushPanel extends JPanel{
             item.draw((Graphics2D)g);
         }
 
+        // drawing current item
+        currentShape.draw((Graphics2D)g);
+
     }
-    // logic of handlig and buttuons
+
+    public void createNewShape(){
+        if (currentShape instanceof Rectangle)
+            currentShape = new Rectangle();
+        else if (currentShape instanceof Oval)
+            currentShape = new Oval();
+        else if (currentShape instanceof Line)
+            currentShape = new Line();
+        else if (currentShape instanceof Pencil)
+            currentShape = new Pencil();
+        else if (currentShape instanceof Eraser)
+            currentShape = new Eraser();
+        else
+            currentShape = null;
+    }
 }
