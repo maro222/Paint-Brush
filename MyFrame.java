@@ -29,6 +29,12 @@ public class MyFrame extends JFrame {
         saveBtn.addActionListener(e -> {
             ImageSaver.savePanelAsPng(panel); 
         });
+        
+        
+        JButton uploadBtn = new JButton("Upload Image");
+        uploadBtn.addActionListener(e -> {
+            ImageLoader.uploadToPanel(panel);
+        });
 
         // 4. Create a TOP TOOLBAR to hold all buttons
         // This keeps the "drawing area" free of obstructions
@@ -36,6 +42,7 @@ public class MyFrame extends JFrame {
         topToolbar.setLayout(new FlowLayout(FlowLayout.LEFT)); // Buttons line up left-to-right
         
         topToolbar.add(saveBtn);
+        topToolbar.add(uploadBtn);
         topToolbar.add(myPaintColorController);
         topToolbar.add(myPaintModeController);
         topToolbar.add(myPaintStyleController);
