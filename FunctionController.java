@@ -2,6 +2,7 @@
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 // import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -23,6 +24,14 @@ public class FunctionController extends JPanel{
        undoButton.addActionListener(new UnDoListener()); 
        add(clearButton); 
        add(undoButton); 
+       
+       
+       JButton saveBtn = new JButton("Save");
+
+        saveBtn.addActionListener(e -> {
+            // Call the separate class and pass your panel reference
+            ImageSaver.savePanelAsPng(this.paintBrushPanel); 
+        });
  
     }
     
