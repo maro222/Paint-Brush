@@ -91,6 +91,7 @@ public class PaintBrushPanel extends JPanel {
 
     public void setUploadedImage(BufferedImage img) {
         this.uploadedImage = img;
+        list.clear();
         this.repaint(); // This tells the panel to redraw itself immediately
     }
 
