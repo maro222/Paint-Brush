@@ -34,18 +34,9 @@ public class PaintBrushPanel extends JPanel{
         currentShape = new Line();
 
 
-        myFunctionController = new FunctionController(this);
-        myPaintColorController = new PaintColorController(this);
-        myPaintModeController = new PaintModeController(this);
-        myPaintStyleController = new PaintStyleController(this);
-        
-        add(myPaintColorController, BorderLayout.WEST);
-        add(myPaintModeController, BorderLayout.SOUTH);
-        add(myFunctionController, BorderLayout.SOUTH);
-        add(myPaintStyleController, BorderLayout.EAST);
 
         addMouseListener(new MouseListener() {
-
+                
             @Override
             public void mouseClicked(MouseEvent e) {}
 
