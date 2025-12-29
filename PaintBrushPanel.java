@@ -7,23 +7,19 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 public class PaintBrushPanel extends JPanel{
 
-     ArrayList<Shape> list;
+    ArrayList<Shape> list;
     Shape currentShape;
     Color currentcolor;
     BasicStroke currentstroke;
     float[] dashPattern = {10f, 5f};
     boolean currentfillflag;
-
-    FunctionController myFunctionController;
-    PaintColorController myPaintColorController;
-    PaintModeController myPaintModeController;
-    PaintStyleController myPaintStyleController;
-
-
+    BufferedImage uploadedImage = null;
+ 
 
 
     PaintBrushPanel(){
@@ -96,17 +92,29 @@ public class PaintBrushPanel extends JPanel{
 
     }
 
-    public void paint(Graphics g){
+    
+    public void setUploadedImage(BufferedImage img) {
+        this.uploadedImage = img;
+        this.repaint(); // This tells the panel to redraw itself immediately
+    }
+    public void paint(Graphics g) {
         super.paint(g);
-        for (Shape item : list){
-            item.draw((Graphics2D)g);
+        Graphics2D g2d = (Graphics2D) g;
+
+         if (uploadedImage != null) {
+             g2d.drawImage(uploadedImage, 0, 0, null);
         }
 
-        // drawing current item
-        currentShape.draw((Graphics2D)g);
+         for (Shape item : list) 
+                     item.draw(g2d);
+        
 
+         if (currentShape != null) {
+               currentShape.draw(g2d);
+        }
     }
-
+    
+    
     public void createNewShape(){
         if (currentShape instanceof Rectangle)
             currentShape = new Rectangle();
